@@ -1,0 +1,57 @@
+# .github/workflows/metrics.yml
+name: GitHub Metrics
+on:
+  # Jalankan setiap 6 jam
+  schedule:
+    - cron: "0 */6 * * *"
+  # Izinkan untuk menjalankan manual dari tab Actions
+  workflow_dispatch:
+  # Jalankan juga saat ada push ke branch main (opsional, tapi bagus untuk tes)
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          # Username GitHub Anda
+          user: FayruzAldi
+          
+          # Gunakan template klasik
+          template: classic
+          
+          # Gunakan token yang kita simpan tadi
+          token: ${{ secrets.METRICS_TOKEN }}
+
+          # Zona waktu untuk menampilkan kapan Anda aktif
+          config_timezone: Asia/Jakarta
+          
+          # Pisahkan output menjadi beberapa bagian agar tidak terlalu panjang
+          base: header, activity, community, repositories, metadata
+          
+          # --- PLUGIN ---
+          # Tambahkan plugin yang Anda ingiki
+          
+          # Plugin Bahasa Pemrograman
+          plugin_languages: yes
+          plugin_languages_limit: 8             # Tampilkan 8 bahasa teratas
+          plugin_languages_threshold: 0%        # Tampilkan semua bahasa
+          
+          # Plugin Garis Kode (Lines of Code)
+          plugin_lines: yes
+          
+          # Plugin Kebiasaan (Habits)
+          plugin_habits: yes
+          plugin_habits_from: 200               # Analisis dari 200 commit terakhir
+          plugin_habits_charts: yes             # Tampilkan dalam bentuk chart
+          
+          # Plugin Kalender
+          plugin_calendar: yes
+          
+          # Plugin Aktivitas Terkini
+          plugin_recent: yes
+          plugin_recent_limit: 5                # Tampilkan 5 aktivitas terakhir
